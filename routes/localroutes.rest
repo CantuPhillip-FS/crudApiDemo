@@ -1,0 +1,29 @@
+GET http://localhost:8000/students
+
+###
+
+GET http://localhost:8000/students/692d9d868da5df0272910a5e
+
+###
+
+POST http://localhost:8000/students
+Content-Type: application/json
+
+{
+  "name": "Mr. Cantu",
+  "class": "DWA"
+}
+
+###
+
+DELETE http://localhost:8000/students/692d9d868da5df0272910a5e
+
+###
+
+PATCH http://localhost:8000/students/692d9d868da5df0272910a5e
+Content-Type: application/json
+
+{
+  "name": "Philip V. Cantu",
+  "class": "DWA"
+}
