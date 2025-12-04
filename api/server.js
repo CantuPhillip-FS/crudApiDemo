@@ -19,7 +19,7 @@ db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Database Connection Established"));
 
 app.use(express.json());
-app.use("/students", studentRouter);
+app.use("/api/v1/students", studentRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
