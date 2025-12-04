@@ -4,11 +4,7 @@ function App() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // const API_BASE =
-  //   import.meta.env.NODE_ENV === "development"
-  //     ? `http://localhost:8000`
-  //     : import.meta.env.VITE_BASE_URL;
-  const API_BASE = import.meta.env.BASE_URL;
+  const API_BASE = import.meta.env.VITE_BASE_URL;
 
   const getStudents = async () => {
     setLoading(true);
