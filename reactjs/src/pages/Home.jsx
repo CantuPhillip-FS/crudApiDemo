@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 import fetchAllStudents from "../services/fetchAllStudents";
 
 function Home() {
@@ -35,7 +36,9 @@ function Home() {
       ) : (
         <ul>
           {students.map((student, index) => (
-            <li key={index}>{student.name}</li>
+            <li key={index}>
+              <Link to={`/student/${student._id}`}>{student.name}</Link>
+            </li>
           ))}
         </ul>
       )}
