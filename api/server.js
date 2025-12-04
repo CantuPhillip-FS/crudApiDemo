@@ -24,3 +24,5 @@ app.use("/students", studentRouter);
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });
+
+module.exports = app;
