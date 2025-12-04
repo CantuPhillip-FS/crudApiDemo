@@ -10,6 +10,9 @@ const Student = ({ id }) => {
     const getStudent = async () => {
       try {
         const foundStudent = await fetchAStudent(id);
+        if (!foundStudent || foundStudent.length < 1) {
+          return;
+        }
         console.log("Found Student >>>", foundStudent);
         setStudent(foundStudent);
       } catch (error) {
@@ -17,13 +20,12 @@ const Student = ({ id }) => {
       }
     };
     getStudent();
-  }, []);
-  console.log(student);
+  }, [id]);
 
   return (
     <div>
       <h1>Student</h1>
-      {student !== undefined ? (
+      {student ? (
         <>
           <p>
             <strong>Name:</strong> {student[0].name}

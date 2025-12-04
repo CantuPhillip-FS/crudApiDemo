@@ -6,14 +6,6 @@ const fetchAStudent = async ({ id }) => {
     const allStudents = await rawStudents.json();
     const findStudentById = allStudents.filter((student) => student._id === id);
 
-    if (
-      !findStudentById ||
-      findStudentById === "undefined" ||
-      findStudentById === null
-    ) {
-      return "No student found";
-    }
-
     return findStudentById;
   } catch (error) {
     console.log(error.message || "Unexpected Error");
