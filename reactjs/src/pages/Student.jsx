@@ -10,7 +10,8 @@ const Student = ({ id }) => {
     const getStudent = async () => {
       try {
         const foundStudent = await fetchAStudent(id);
-        if (!foundStudent || foundStudent.length < 1) {
+        console.log("found student >>>", foundStudent);
+        if (!foundStudent) {
           return;
         }
         console.log("Found Student >>>", foundStudent);
@@ -24,14 +25,14 @@ const Student = ({ id }) => {
 
   return (
     <div>
-      <h1>Student</h1>
+      <h1>Student Profile</h1>
       {student ? (
         <>
           <p>
-            <strong>Name:</strong> {student[0].name}
+            <strong>Name:</strong> {student.name}
           </p>
           <p>
-            <strong>Class:</strong> {student[0].class}
+            <strong>Class:</strong> {student.class}
           </p>
         </>
       ) : (
