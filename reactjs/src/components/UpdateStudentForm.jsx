@@ -1,8 +1,8 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import createAStudent from "../services/createAStudent";
+import updateStudent from "../services/updateStudent";
 
-const CreateStudentForm = ({ onCreation }) => {
+const UpdateStudentForm = ({ onUpdate, id }) => {
   const [values, setValues] = useState({
     name: "",
     class: "",
@@ -19,12 +19,12 @@ const CreateStudentForm = ({ onCreation }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await createAStudent(values);
+      const response = await updateStudent(values, id);
       if (!response.ok) {
         toast.error("Something went wrong");
       }
-      toast.success("Student created!");
-      onCreation();
+      toast.success("Student updated!");
+      onUpdate();
       setValues({
         name: "",
         class: "",
@@ -36,8 +36,8 @@ const CreateStudentForm = ({ onCreation }) => {
 
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
-      <h2>Create a new student:</h2>
-      <label htmlFor="name">Name:</label>
+      <h2>Update student info:</h2>
+      <label htmlFor="name">New Name:</label>
       <input
         type="text"
         name="name"
@@ -46,7 +46,7 @@ const CreateStudentForm = ({ onCreation }) => {
         onChange={handleInputChanges}
         required
       />
-      <label htmlFor="class">Class:</label>
+      <label htmlFor="class">New Class:</label>
       <input
         type="text"
         name="class"
@@ -60,4 +60,4 @@ const CreateStudentForm = ({ onCreation }) => {
   );
 };
 
-export default CreateStudentForm;
+export default UpdateStudentForm;

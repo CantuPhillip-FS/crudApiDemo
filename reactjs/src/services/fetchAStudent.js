@@ -1,6 +1,5 @@
 const fetchAStudent = async ({ id }) => {
   const API_BASE = import.meta.env.VITE_BASE_URL;
-  console.log("id >>>", id);
   try {
     const rawStudent = await fetch(`${API_BASE}/students/${id}`);
     const foundStudent = await rawStudent.json();

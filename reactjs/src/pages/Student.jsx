@@ -1,30 +1,36 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router";
+import UpdateStudentForm from "../components/UpdateStudentForm";
 import deleteAStudent from "../services/deleteAStudent";
 import fetchAStudent from "../services/fetchAStudent";
 
 const Student = ({ id }) => {
   id = useParams();
   const navigate = useNavigate();
-  const [student, setStudent] = useState();
+  const [student, setStudent] = useState({
+    name: "",
+    class: "",
+    id: "",
+  });
+  // this state is used to properly re-fetch the student upon new update
+  // I learned and did this in the previous class with Brad
+  const [reloadStudent, setReloadStudent] = useState(0);
 
   useEffect(() => {
     const getStudent = async () => {
       try {
         const foundStudent = await fetchAStudent(id);
-        console.log("found student >>>", foundStudent);
         if (!foundStudent) {
           return;
         }
-        console.log("Found Student >>>", foundStudent);
         setStudent(foundStudent);
       } catch (error) {
         console.log(error.message);
       }
     };
     getStudent();
-  }, [id]);
+  }, [id, reloadStudent]);
 
   const deleteStudent = async () => {
     try {
@@ -51,7 +57,14 @@ const Student = ({ id }) => {
           <p>
             <strong>Class:</strong> {student.class}
           </p>
+          <p>
+            <strong>ID:</strong> {student._id}
+          </p>
           <button onClick={() => deleteStudent()}>Delete Student</button>
+          <UpdateStudentForm
+            id={student._id}
+            onUpdate={() => setReloadStudent((state) => state + 1)}
+          />
         </>
       ) : (
         <p>No student found</p>
