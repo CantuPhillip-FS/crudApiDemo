@@ -33,7 +33,7 @@ const Student = ({ id }) => {
         return toast.error("Something went wrong");
       }
       toast.success("Student deleted");
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
       return;
     } catch (error) {
       console.log(error);

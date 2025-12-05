@@ -6,7 +6,7 @@ const fetchAllStudents = async () => {
     console.log("Fetch >>>", rawStudents);
 
     const allStudents = await rawStudents.json();
-    console.log("Parsed >>>", allStudents);
+    console.log("JSONified >>>", allStudents);
 
     if (!allStudents || allStudents === "undefined" || allStudents === null) {
       return "No students found";
