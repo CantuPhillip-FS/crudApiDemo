@@ -26,7 +26,7 @@ function Dashboard() {
   }, []);
 
   return (
-    <main>
+    <section>
       <h1>Students:</h1>
       {loading ? (
         <p>Loading...</p>
@@ -39,7 +39,7 @@ function Dashboard() {
           ))}
         </ul>
       )}
-    </main>
+    </section>
   );
 }
 

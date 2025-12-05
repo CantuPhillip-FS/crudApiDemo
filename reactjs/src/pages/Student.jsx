@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { toast } from "react-hot-toast";
+import { useNavigate, useParams } from "react-router";
+import deleteAStudent from "../services/deleteAStudent";
 import fetchAStudent from "../services/fetchAStudent";
 
 const Student = ({ id }) => {
   id = useParams();
+  const navigate = useNavigate();
   const [student, setStudent] = useState();
 
   useEffect(() => {
@@ -23,8 +26,22 @@ const Student = ({ id }) => {
     getStudent();
   }, [id]);
 
+  const deleteStudent = async () => {
+    try {
+      const response = await deleteAStudent(id);
+      if (!response.ok) {
+        return toast.error("Something went wrong");
+      }
+      toast.success("Student deleted");
+      navigate("/dashboard");
+      return;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div>
+    <section>
       <h1>Student Profile</h1>
       {student ? (
         <>
@@ -34,11 +51,12 @@ const Student = ({ id }) => {
           <p>
             <strong>Class:</strong> {student.class}
           </p>
+          <button onClick={() => deleteStudent()}>Delete Student</button>
         </>
       ) : (
         <p>No student found</p>
       )}
-    </div>
+    </section>
   );
 };
 
