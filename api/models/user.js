@@ -22,20 +22,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// userSchema.pre("save", function (next) {
-//   const user = this;
-//   if (user.isNew || user.isModified("password")) {
-//     bcrypt.genSalt(10, (error, salt) => {
-//       if (error) { return next(error); }
-//       bcrypt.hash(user.password, salt, null, (error, hash) => {
-//         if (error) { return next(error); }
-//         user.password = hash;
-//         next();
-//       });
-//     });
-//   } else { next(); }
-// });
-
 userSchema.pre("save", async function () {
   const user = this;
 
@@ -59,5 +45,16 @@ userSchema.pre("save", async function () {
 
   user.password = hash;
 });
+
+userSchema.methods.comparePassword = function (candidatePassword) {
+  const user = this;
+
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {
+      if (err) return reject(err);
+      resolve(isMatch);
+    });
+  });
+};
 
 module.exports = mongoose.model("User", userSchema);
