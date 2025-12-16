@@ -5,7 +5,7 @@ const validateEmail = (email) => {
   return /^\S+@\S+\.\S+$/.test(email);
 };
 
-const userScheme = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -22,26 +22,42 @@ const userScheme = new mongoose.Schema(
   { timestamps: true }
 );
 
-userScheme.pre("save", (next) => {
+// userSchema.pre("save", function (next) {
+//   const user = this;
+//   if (user.isNew || user.isModified("password")) {
+//     bcrypt.genSalt(10, (error, salt) => {
+//       if (error) { return next(error); }
+//       bcrypt.hash(user.password, salt, null, (error, hash) => {
+//         if (error) { return next(error); }
+//         user.password = hash;
+//         next();
+//       });
+//     });
+//   } else { next(); }
+// });
+
+userSchema.pre("save", async function () {
   const user = this;
-  if (user.isNew || user.isModified("password")) {
-    // run hasing and salting
-    bcrypt.genSalt(10, (error, salt) => {
-      if (error) {
-        return next(error);
-      }
-      bcrypt.hash(user.password, salt, null, (error, hash) => {
-        if (error) {
-          return next(error);
-        }
-        user.password = hash;
-        next();
-      });
-    });
-  } else {
-    // skip hasing and salting
-    next();
+
+  if (!user.isNew && !user.isModified("password")) {
+    return;
   }
+
+  const salt = await new Promise((resolve, reject) => {
+    bcrypt.genSalt(10, (err, salt) => {
+      if (err) reject(err);
+      else resolve(salt);
+    });
+  });
+
+  const hash = await new Promise((resolve, reject) => {
+    bcrypt.hash(user.password, salt, null, (err, hash) => {
+      if (err) reject(err);
+      else resolve(hash);
+    });
+  });
+
+  user.password = hash;
 });
 
-module.exports = mongoose.model("User", userScheme);
+module.exports = mongoose.model("User", userSchema);
