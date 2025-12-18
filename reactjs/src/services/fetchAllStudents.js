@@ -5,6 +5,12 @@ const fetchAllStudents = async () => {
     const rawStudents = await fetch(`${API_BASE}/students`);
     console.log("Fetch >>>", rawStudents);
 
+    if (!rawStudents.ok) return 1;
+
+    if (rawStudents.statusText === "Unauthorized") {
+      return 2;
+    }
+
     const allStudents = await rawStudents.json();
     console.log("JSONified >>>", allStudents);
 

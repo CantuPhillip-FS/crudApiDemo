@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
@@ -6,9 +7,21 @@ import Home from "./pages/Home";
 import Student from "./pages/Student";
 
 function App() {
+  const [currentUser, setCurrentUser] = useState(false);
+
+  useEffect(() => {
+    // const user = AuthService.getCurrentUser();
+    (async () => {
+      const user = false;
+      if (user) {
+        setCurrentUser(user);
+      }
+    })();
+  }, []);
+
   return (
     <>
-      <Navbar />
+      <Navbar isLoggedIn={currentUser} />
       <main>
         <Routes>
           <Route path="/" element={<Home />} index />
