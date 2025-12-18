@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = import.meta.BASE_URL;
+const baseUrl = import.meta.env.BASE_URL;
 
 const login = async ({ email, password }) => {
   try {
