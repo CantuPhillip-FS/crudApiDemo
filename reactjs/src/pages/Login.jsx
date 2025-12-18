@@ -13,6 +13,7 @@ const Login = () => {
       console.log(`${email}, ${password}, clicked!`);
       // await service
       toast.success("Welcome! You're Logged in");
+      navigate("/dashboard");
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
