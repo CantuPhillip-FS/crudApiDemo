@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 
 const Signup = () => {
@@ -11,8 +12,10 @@ const Signup = () => {
     try {
       console.log(`${email}, ${password}, clicked!`);
       // await service
+      toast.success("Welcome! You're signed up");
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong");
     }
   };
   return (
