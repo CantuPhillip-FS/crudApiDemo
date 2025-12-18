@@ -1,6 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import signup from "../services/auth-services/signupUser";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -9,14 +10,20 @@ const Signup = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const user = {
+      email,
+      password,
+    };
     try {
-      console.log(`${email}, ${password}, clicked!`);
-      // await service
+      const response = await signup(user);
+      if (!response) throw new Error();
       toast.success("Welcome! You're signed up");
       navigate("/dashboard");
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
+      setEmail("");
+      setPassword("");
     }
   };
   return (
@@ -28,6 +35,7 @@ const Signup = () => {
           type="email"
           name="email"
           id="email"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
@@ -38,6 +46,7 @@ const Signup = () => {
           id="password"
           pattern=".{8,}"
           title="Must be at least 8 characters long"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />

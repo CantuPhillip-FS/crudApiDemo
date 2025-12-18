@@ -1,6 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import login from "../services/auth-services/loginUser.js";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -9,14 +10,21 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const user = {
+      email,
+      password,
+    };
     try {
       console.log(`${email}, ${password}, clicked!`);
-      // await service
+      const response = await login(user);
+      if (!response) throw new Error();
       toast.success("Welcome! You're Logged in");
       navigate("/dashboard");
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
+      setEmail("");
+      setPassword("");
     }
   };
   return (
@@ -29,6 +37,7 @@ const Login = () => {
           name="email"
           id="email"
           onChange={(e) => setEmail(e.target.value)}
+          value={email}
           required
         />
         <label htmlFor="password">Password: </label>
@@ -39,6 +48,7 @@ const Login = () => {
           pattern=".{8,}"
           title="Must be at least 8 characters long"
           onChange={(e) => setPassword(e.target.value)}
+          value={password}
           required
         />
         <button type="submit">Login</button>

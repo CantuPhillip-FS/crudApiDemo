@@ -1,11 +1,12 @@
 import axios from "axios";
 
-const baseUrl = import.meta.env.BASE_URL;
+const API_BASE = import.meta.env.VITE_BASE_URL;
 
 const signup = async ({ email, password }) => {
   try {
-    const response = await axios.post(`${baseUrl}/auth`, { email, password });
-    if (!response.ok) return null;
+    const response = await axios.post(`${API_BASE}/auth`, { email, password });
+    console.log("SIGNUP RESPONSE >>>", response);
+    if (!response.status === 200) return null;
     if (response.data.token) {
       localStorage.setItem("user", JSON.stringify(response.data));
     }

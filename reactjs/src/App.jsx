@@ -7,14 +7,14 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Student from "./pages/Student";
+import getCurrentUser from "./services/auth-services/getCurrentUser.js";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(false);
 
   useEffect(() => {
-    // const user = AuthService.getCurrentUser();
+    const user = getCurrentUser();
     (async () => {
-      const user = false;
       if (user) {
         setCurrentUser(user);
       }

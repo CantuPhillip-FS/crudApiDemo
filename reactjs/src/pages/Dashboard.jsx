@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router";
 import CreateStudentForm from "../components/CreateStudentForm";
-import fetchAllStudents from "../services/fetchAllStudents";
+// import fetchAllStudents from "../services/fetchAllStudents";
+import studentsService from "../services/auth-services/studentService";
 
 function Dashboard() {
   const [students, setStudents] = useState([]);
@@ -13,7 +14,7 @@ function Dashboard() {
     (async () => {
       try {
         setMessage("Loading...");
-        const allStudents = await fetchAllStudents();
+        const allStudents = await studentsService.getAllPrivateStudents();
         if (allStudents === 1) {
           setMessage("Something went wrong.");
           toast.error("Something went wrong.");
@@ -24,6 +25,7 @@ function Dashboard() {
         }
 
         setStudents(allStudents);
+        setMessage("");
       } catch (error) {
         console.log(error.message || "Unexpected Error");
         setMessage("Error fetching students");

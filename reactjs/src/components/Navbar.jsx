@@ -1,19 +1,27 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import logoutUser from "../services/auth-services/logoutUser.js";
 
 const Navbar = ({ isLoggedIn }) => {
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    logoutUser();
+    navigate("/");
+  };
+
   return (
     <header>
       <nav>
         <li>
           <Link to="/">Home</Link>
         </li>
-        <li>
-          <Link to="/dashboard">Dashboard</Link>
-        </li>
         {isLoggedIn ? (
-          <li>
-            <Link to="/logout">Logout</Link>
-          </li>
+          <>
+            <li>
+              <Link to="/dashboard">Dashboard</Link>
+            </li>
+            <button onClick={logout}>Logout</button>
+          </>
         ) : (
           <>
             <li>
