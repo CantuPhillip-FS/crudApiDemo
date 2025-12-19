@@ -1,9 +1,17 @@
-const fetchAllStudents = async () => {
+const fetchAllStudents = async (token) => {
   const API_BASE = import.meta.env.VITE_BASE_URL;
 
   try {
-    const rawStudents = await fetch(`${API_BASE}/students`);
+    const rawStudents = await fetch(`${API_BASE}/students`, {
+      Authorization: token,
+    });
     console.log("Fetch >>>", rawStudents);
+
+    if (!rawStudents.ok) return 1;
+
+    if (rawStudents.statusText === "Unauthorized") {
+      return 2;
+    }
 
     const allStudents = await rawStudents.json();
     console.log("JSONified >>>", allStudents);

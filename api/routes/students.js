@@ -1,4 +1,7 @@
 const express = require("express");
+const passport = require("passport");
+const passportService = require("../services/passport");
+const protectedRoute = passport.authenticate("jwt", { session: false });
 const router = express.Router();
 const Student = require("../models/student");
 // RESTFUL Endpoints
@@ -19,7 +22,7 @@ const getStudent = async (req, res, next) => {
 };
 
 // GET ALL
-router.get("/", async (req, res) => {
+router.get("/", protectedRoute, async (_req, res) => {
   try {
     const students = await Student.find();
     res.status(200).json(students);
@@ -29,7 +32,7 @@ router.get("/", async (req, res) => {
 });
 
 // GET ONE
-router.get("/:id", getStudent, async (req, res) => {
+router.get("/:id", getStudent, async (_req, res) => {
   try {
     res.json(res.student);
   } catch (error) {
@@ -68,7 +71,7 @@ router.patch("/:id", getStudent, async (req, res) => {
 });
 
 // DELETE
-router.delete("/:id", getStudent, async (req, res) => {
+router.delete("/:id", getStudent, async (_req, res) => {
   try {
     await res.student.deleteOne();
     res.json({ message: "Removed student" });

@@ -2,38 +2,43 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router";
 import CreateStudentForm from "../components/CreateStudentForm";
-import fetchAllStudents from "../services/fetchAllStudents";
+// import fetchAllStudents from "../services/fetchAllStudents";
+import studentsService from "../services/auth-services/studentService";
 
 function Dashboard() {
   const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(false);
-  // this state is used to properly re-fetch the students upon new creations
-  // I learned and did this in the previous class with Brad
+  const [message, setMessage] = useState("");
   const [reloadStudents, setReloadStudents] = useState(0);
 
-  const getStudents = async () => {
-    setLoading(true);
-    try {
-      const allStudents = await fetchAllStudents();
-
-      setStudents(allStudents);
-    } catch (error) {
-      console.log(error.message || "Unexpected Error");
-      toast.error("Error fetching students");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    getStudents();
+    (async () => {
+      try {
+        setMessage("Loading...");
+        const allStudents = await studentsService.getAllPrivateStudents();
+        if (allStudents === 1) {
+          setMessage("Something went wrong.");
+          toast.error("Something went wrong.");
+        }
+        if (allStudents === 2) {
+          setMessage("Unauthorized. Please login.");
+          toast.error("Unauthorized. Please login");
+        }
+
+        setStudents(allStudents);
+        setMessage("");
+      } catch (error) {
+        console.log(error.message || "Unexpected Error");
+        setMessage("Error fetching students");
+        toast.error("Error fetching students");
+      }
+    })();
   }, [reloadStudents]);
 
   return (
     <section>
       <h1>Students:</h1>
-      {loading ? (
-        <p>Loading...</p>
+      {message ? (
+        <p style={styles.dashboardMessage}>{message}</p>
       ) : (
         <ul>
           {students.map((student, index) => (
@@ -43,11 +48,22 @@ function Dashboard() {
           ))}
         </ul>
       )}
-      <CreateStudentForm
-        onCreation={() => setReloadStudents((state) => state + 1)}
-      />
+      {!message && (
+        <CreateStudentForm
+          onCreation={() => setReloadStudents((state) => state + 1)}
+        />
+      )}
     </section>
   );
 }
 
 export default Dashboard;
+
+const styles = {
+  dashboardMessage: {
+    fontWeight: 800,
+    textAlign: "center",
+    fontSize: "1.25rem",
+    color: "#FFBF00",
+  },
+};

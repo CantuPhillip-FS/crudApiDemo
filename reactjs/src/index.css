@@ -70,19 +70,38 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+header {
+  background-color: #1a1a1a;
+  width: 100%;
+  padding: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+  border-bottom: 2px solid black;
+}
+
 header nav {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 header nav li {
   list-style: none;
+  font-size: 1.5rem;
+  padding: 0.25rem 0.75rem;
+}
+
+header nav li:hover {
+  outline: auto;
 }
 
 form {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+input {
+  padding: 0.25rem 0.5rem;
 }
 
 @media (prefers-color-scheme: light) {
