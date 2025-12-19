@@ -1,12 +1,17 @@
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router";
-import logoutUser from "../services/auth-services/logoutUser.js";
+import useAuth from "../context/useAuth";
+import logoutUser from "../services/auth-services/logoutUser";
 
-const Navbar = ({ isLoggedIn }) => {
+const Navbar = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
-  const logout = async () => {
+  const handleLogout = () => {
     logoutUser();
+    logout();
     navigate("/");
+    toast.success("Successfully logged out.");
   };
 
   return (
@@ -15,12 +20,13 @@ const Navbar = ({ isLoggedIn }) => {
         <li>
           <Link to="/">Home</Link>
         </li>
-        {isLoggedIn ? (
+
+        {user ? (
           <>
             <li>
               <Link to="/dashboard">Dashboard</Link>
             </li>
-            <button onClick={logout}>Logout</button>
+            <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
           <>
